@@ -1,0 +1,121 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Kiem tra chu ky so online mien phi";
+    ViewData["Description"] = "Tai len PDF, XML, P7S hoac P7M de kiem tra chu ky so, chung thu so, chuoi CA va OCSP/CRL theo thoi gian thuc.";
+}
+
+<section class="tool-shell">
+    <div class="tool-copy">
+        <p class="eyebrow">Cong cu mien phi</p>
+        <h1>Kiem tra chu ky so online</h1>
+        <p class="lead">
+            Tai len PDF, XML hoa don dien tu, P7S hoac P7M de kiem tra chu ky, chung thu so, chuoi CA va trang thai OCSP/CRL.
+        </p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="upload-panel">
+        <label for="upload" class="upload-label">Chon file can kiem tra</label>
+        <input id="upload" asp-for="Upload" type="file" accept=".pdf,.xml,.p7s,.p7m,application/pdf,text/xml,application/xml" />
+        <p class="upload-hint">Ho tro PDF, XML, P7S, P7M. Gioi han 25 MB. File chi dung cho phien kiem tra hien tai.</p>
+        @if (Model.FormError is not null)
+        {
+            <p class="form-error" role="alert">@Model.FormError</p>
+        }
+        <button type="submit">Kiem tra van ban</button>
+    </form>
+</section>
+
+@if (Model.Report is not null)
+{
+    <section class="result-panel @IndexModel.OverallClass(Model.Report.OverallStatus)" aria-labelledby="result-title">
+        <div class="result-header">
+            <div>
+                <p class="eyebrow">Ket qua kiem tra</p>
+                <h2 id="result-title">@IndexModel.OverallLabel(Model.Report.OverallStatus)</h2>
+            </div>
+            <span>@IndexModel.FileTypeLabel(Model.Report.FileType)</span>
+        </div>
+
+        <p class="result-summary">
+            Kiem tra luc @IndexModel.FormatDate(Model.Report.CheckedAt).
+            @if (Model.Report.Errors.Count > 0)
+            {
+                @Model.Report.Errors[0]
+            }
+            else if (Model.Report.Signatures.Count == 0)
+            {
+                <text>Khong co chu ky nao duoc phat hien trong file.</text>
+            }
+            else
+            {
+                <text>Tim thay @Model.Report.Signatures.Count chu ky trong file.</text>
+            }
+        </p>
+
+        @foreach (var signature in Model.Report.Signatures)
+        {
+            <article class="signature-block">
+                <div class="signature-heading">
+                    <h3>@IndexModel.OverallLabel(signature.Status)</h3>
+                    <span>@(signature.SignerName ?? "Nguoi ky khong xac dinh")</span>
+                </div>
+
+                <dl class="signature-meta">
+                    <div>
+                        <dt>To chuc nguoi ky</dt>
+                        <dd>@(signature.SignerOrganization ?? "Khong co thong tin")</dd>
+                    </div>
+                    <div>
+                        <dt>Don vi cap</dt>
+                        <dd>@(signature.IssuerName ?? "Khong co thong tin")</dd>
+                    </div>
+                    <div>
+                        <dt>Serial chung thu</dt>
+                        <dd>@(signature.SerialNumber ?? "Khong co thong tin")</dd>
+                    </div>
+                    <div>
+                        <dt>Thoi gian ky</dt>
+                        <dd>@IndexModel.FormatDate(signature.SigningTime)</dd>
+                    </div>
+                    <div>
+                        <dt>Hieu luc tu</dt>
+                        <dd>@IndexModel.FormatDate(signature.CertificateValidFrom)</dd>
+                    </div>
+                    <div>
+                        <dt>Hieu luc den</dt>
+                        <dd>@IndexModel.FormatDate(signature.CertificateValidTo)</dd>
+                    </div>
+                </dl>
+
+                <div class="check-grid">
+                    @foreach (var check in IndexModel.Checks(signature.Checks))
+                    {
+                        <div class="check-item">
+                            <span>@check.Label</span>
+                            <strong class="@IndexModel.CheckClass(check.Status)">@IndexModel.CheckLabel(check.Status)</strong>
+                        </div>
+                    }
+                </div>
+
+                @if (signature.Explanations.Count > 0)
+                {
+                    <ul class="explanations">
+                        @foreach (var explanation in signature.Explanations)
+                        {
+                            <li>@explanation</li>
+                        }
+                    </ul>
+                }
+            </article>
+        }
+    </section>
+}
+
+<section class="content-band">
+    <h2>Khi nao ket qua co y nghia?</h2>
+    <p>
+        Ket qua hop le chi co y nghia trong pham vi trust store, thoi diem kiem tra va kha nang truy van OCSP/CRL cua nha cung cap chung thu.
+        Neu OCSP hoac CRL khong phan hoi, he thong se hien thi trang thai khong xac dinh thay vi ket luan tuyet doi.
+    </p>
+</section>
