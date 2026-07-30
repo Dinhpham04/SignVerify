@@ -1,0 +1,69 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name __SERVER_NAME__;
+
+    server_tokens off;
+    access_log /var/log/nginx/chukyso.access.log;
+    error_log /var/log/nginx/chukyso.error.log;
+
+    # Allow a 25 MB file plus multipart form overhead.
+    client_max_body_size 26m;
+    client_body_timeout 30s;
+    send_timeout 90s;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), geolocation=(), microphone=()" always;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    proxy_hide_header X-Powered-By;
+
+    location = /healthz {
+        access_log off;
+        proxy_pass http://__WEB_UPSTREAM__/healthz;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 10s;
+    }
+
+    location /api/ {
+        proxy_pass http://__API_UPSTREAM__;
+        proxy_http_version 1.1;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+
+        # Stream uploads to ASP.NET instead of buffering the whole file on disk.
+        proxy_request_buffering off;
+        proxy_connect_timeout 5s;
+        proxy_send_timeout 90s;
+        proxy_read_timeout 90s;
+    }
+
+    location / {
+        proxy_pass http://__WEB_UPSTREAM__;
+        proxy_http_version 1.1;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+
+        # Next.js App Router streams responses when self-hosted.
+        proxy_buffering off;
+        proxy_connect_timeout 5s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+}
