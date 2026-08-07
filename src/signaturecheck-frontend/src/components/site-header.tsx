@@ -1,4 +1,4 @@
-import { ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { SITE_NAME } from "@/lib/site";
@@ -7,10 +7,15 @@ export function SiteHeader() {
   return (
     <header className="border-b bg-white">
       <div className="mx-auto flex min-h-16 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
-        <Link className="flex items-center gap-2 font-semibold text-foreground" href="/">
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <ShieldCheck className="h-4 w-4" aria-hidden={true} />
-          </span>
+        <Link className="flex items-center gap-2.5 font-semibold text-foreground" href="/">
+          <Image
+            src="/brand/logo-mark-96.png"
+            alt=""
+            width={36}
+            height={36}
+            priority
+            aria-hidden={true}
+          />
           <span>{SITE_NAME}</span>
         </Link>
         <nav className="hidden items-center gap-1 text-sm text-muted-foreground sm:flex" aria-label="Điều hướng chính">

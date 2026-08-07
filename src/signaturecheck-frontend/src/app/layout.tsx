@@ -27,6 +27,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [{ url: "/brand/logo-mark-192.png", type: "image/png", sizes: "192x192" }],
+    apple: [{ url: "/brand/apple-touch-icon.png", type: "image/png", sizes: "180x180" }],
+  },
   openGraph: {
     title: "Kiểm tra chữ ký số online miễn phí",
     description: "Công cụ tiếng Việt giúp kiểm tra chữ ký số trên PDF, XML, P7S và P7M.",

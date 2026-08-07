@@ -1,12 +1,13 @@
 import { ArrowRight, FileCheck2, FileKey2, LockKeyhole, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
+import { HomeSeoContent } from "@/components/home-seo-content";
 import { SignatureTool } from "@/components/signature-tool/signature-tool";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { guideList } from "@/content/guides";
 import { landingPageList } from "@/content/seo-landings";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { HOME_UPDATED_AT, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export default function Home() {
   const structuredData = {
@@ -15,6 +16,7 @@ export default function Home() {
       {
         "@type": "WebSite",
         name: SITE_NAME,
+        alternateName: ["Kiểm Tra Chữ Ký Số", "chukyso.automation.info.vn"],
         url: SITE_URL,
         inLanguage: "vi-VN",
       },
@@ -25,6 +27,15 @@ export default function Home() {
         applicationCategory: "SecurityApplication",
         operatingSystem: "Web",
         inLanguage: "vi-VN",
+        isAccessibleForFree: true,
+        dateModified: HOME_UPDATED_AT,
+        featureList: [
+          "Kiểm tra tính toàn vẹn của tài liệu đã ký",
+          "Xác minh chữ ký mật mã và thông tin người ký",
+          "Kiểm tra chứng thư số và chuỗi CA tin cậy",
+          "Kiểm tra trạng thái thu hồi qua OCSP và CRL",
+          "Hiển thị thời gian ký và dấu thời gian",
+        ],
         description:
           "Công cụ kiểm tra chữ ký số, chứng thư số, chuỗi CA và trạng thái OCSP/CRL trên PDF, XML, P7S và P7M.",
         offers: {
@@ -109,6 +120,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <HomeSeoContent />
 
       <section id="kien-thuc" className="border-t bg-slate-100">
         <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-12">

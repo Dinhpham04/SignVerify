@@ -63,6 +63,7 @@ export function SeoLandingPage({ page }: { page: SeoLandingPageContent }) {
       <ScopeSection page={page} />
       <HowToSection page={page} />
       <ResultsSection page={page} />
+      <DeepDiveSection page={page} />
       <FaqSection page={page} />
       <RelatedSection pages={relatedPages} />
       <RelatedGuidesSection />
@@ -190,6 +191,46 @@ function ResultsSection({ page }: { page: SeoLandingPageContent }) {
               </span>
               <p className="text-sm leading-6 text-muted-foreground">{status.text}</p>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DeepDiveSection({ page }: { page: SeoLandingPageContent }) {
+  return (
+    <section className="border-b bg-slate-50">
+      <div className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 lg:py-14">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold text-primary">{page.deepDive.eyebrow}</p>
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">{page.deepDive.title}</h2>
+          <p className="mt-4 text-base leading-7 text-muted-foreground">{page.deepDive.intro}</p>
+        </div>
+
+        <div className="mt-9 divide-y border-y">
+          {page.deepDive.sections.map((section) => (
+            <article className="grid gap-5 py-8 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10" key={section.title}>
+              <h3 className="text-lg font-semibold leading-7 text-foreground">{section.title}</h3>
+              <div>
+                <div className="space-y-4 text-[15px] leading-7 text-muted-foreground sm:text-base">
+                  {section.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+
+                {section.points && (
+                  <dl className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+                    {section.points.map((point) => (
+                      <div className="border-l-2 border-primary pl-4" key={point.title}>
+                        <dt className="font-semibold text-foreground">{point.title}</dt>
+                        <dd className="mt-1 text-sm leading-6 text-muted-foreground">{point.text}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+              </div>
+            </article>
           ))}
         </div>
       </div>

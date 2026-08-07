@@ -115,7 +115,7 @@ export function SignatureTool({ fileType = "all" }: { fileType?: SignatureToolFi
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-slate-200 bg-white">
+      <Card data-nosnippet="" className="overflow-hidden border-slate-200 bg-white">
         <div className="border-b px-4 py-4 sm:px-6">
           <div className="flex items-start justify-between gap-4">
             <div>

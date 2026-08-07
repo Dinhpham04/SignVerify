@@ -63,6 +63,19 @@ export type SeoLandingPageContent = {
       text: string;
     }>;
   };
+  deepDive: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    sections: ReadonlyArray<{
+      title: string;
+      paragraphs: ReadonlyArray<string>;
+      points?: ReadonlyArray<{
+        title: string;
+        text: string;
+      }>;
+    }>;
+  };
   faq: {
     title: string;
     intro: string;
@@ -171,6 +184,81 @@ export const landingPages = {
         },
       ],
     },
+    deepDive: {
+      eyebrow: "Hiểu sâu hơn về PDF đã ký",
+      title: "Những điểm cần đọc trước khi kết luận chữ ký PDF",
+      intro:
+        "PDF có thể chứa nhiều lần sửa đổi, nhiều chữ ký và cả phần hiển thị không liên quan tới dữ liệu mật mã. Vì vậy, kết quả đáng tin cậy phải được đọc theo từng chữ ký thay vì chỉ nhìn con dấu trên trang hoặc một dòng kết luận chung.",
+      sections: [
+        {
+          title: "Chữ ký nhìn thấy và chữ ký mật mã",
+          paragraphs: [
+            "Khung chữ ký, hình con dấu, tên người ký hoặc ngày giờ hiển thị trên trang chỉ là phần trình bày. Chúng giúp người đọc nhận biết vị trí ký nhưng có thể được tạo như một hình ảnh thông thường. Phần có thể xác minh nằm trong cấu trúc PDF: giá trị băm của dữ liệu đã ký, giá trị chữ ký và chứng thư chứa khóa công khai của người ký.",
+            "Một chữ ký cũng có thể hoàn toàn không hiển thị trên trang. Ngược lại, PDF có hình chữ ký đẹp vẫn có thể không chứa chữ ký số. Do đó, bước đầu tiên luôn là kiểm tra xem bộ xác minh có thực sự phát hiện chữ ký mật mã hay không, sau đó mới đọc người ký và trạng thái chứng thư.",
+          ],
+          points: [
+            {
+              title: "Có hình nhưng không có chữ ký số",
+              text: "Coi hình ảnh là nội dung tài liệu; không dùng nó để xác nhận danh tính hoặc tính toàn vẹn.",
+            },
+            {
+              title: "Có chữ ký nhưng không thấy con dấu",
+              text: "Mở chi tiết chữ ký. Chữ ký ẩn vẫn có thể được xác minh bình thường nếu cấu trúc hợp lệ.",
+            },
+          ],
+        },
+        {
+          title: "Nhiều chữ ký và các lần sửa đổi",
+          paragraphs: [
+            "PDF hỗ trợ cập nhật tăng dần: dữ liệu mới có thể được nối thêm mà không ghi đè toàn bộ phiên bản trước. Cơ chế này cho phép nhiều người ký lần lượt, điền biểu mẫu hoặc bổ sung chú thích theo quyền mà chữ ký chứng nhận cho phép. Vì vậy, một tài liệu có thay đổi sau chữ ký đầu tiên chưa chắc đã bị giả mạo; cần biết thay đổi đó có thuộc phạm vi được phép và chữ ký sau có bảo vệ phiên bản mới hay không.",
+            "Công cụ liệt kê từng chữ ký riêng. Với quy trình nhiều bên, hãy kiểm tra đủ số người cần ký, thứ tự ký, trạng thái từng chữ ký và nội dung cuối cùng. Một chữ ký hợp lệ không làm cho các chữ ký còn lại tự động hợp lệ, cũng không chứng minh tài liệu đã hoàn tất quy trình phê duyệt của đơn vị.",
+          ],
+          points: [
+            {
+              title: "Chữ ký phê duyệt",
+              text: "Thể hiện một lần ký trên phiên bản cụ thể; tài liệu vẫn có thể nhận thêm chữ ký sau đó.",
+            },
+            {
+              title: "Chữ ký chứng nhận",
+              text: "Có thể quy định loại thay đổi được phép sau khi chứng nhận, như điền biểu mẫu hoặc thêm chữ ký.",
+            },
+            {
+              title: "Phiên bản cuối",
+              text: "Đối chiếu nội dung bạn đang đọc với phiên bản được chữ ký cuối cùng bảo vệ.",
+            },
+            {
+              title: "Chữ ký lỗi trong chuỗi",
+              text: "Không bỏ qua một chữ ký thất bại chỉ vì tài liệu còn một chữ ký khác đạt.",
+            },
+          ],
+        },
+        {
+          title: "Thời gian, hết hạn và lỗi xác minh",
+          paragraphs: [
+            "Thời gian ký do ứng dụng ký ghi lại có thể dựa trên đồng hồ của thiết bị. Dấu thời gian do một dịch vụ độc lập phát hành cung cấp bằng chứng thời gian mạnh hơn, nhưng bản thân dấu thời gian cũng cần có chữ ký, chứng thư và chuỗi tin cậy hợp lệ. Khi chứng thư người ký hiện đã hết hạn, dấu thời gian và dữ liệu thu hồi được lưu cùng tài liệu có thể rất quan trọng để đánh giá trạng thái tại lúc ký.",
+            "Nếu kết quả là “chưa đủ dữ liệu”, hãy đọc bước nào chưa hoàn thành. Nguyên nhân thường gặp gồm không dựng được chuỗi CA, không truy cập được OCSP/CRL, thiếu chứng thư trung gian hoặc không xác minh được dấu thời gian. Đây là trạng thái cần bổ sung dữ liệu hoặc kiểm tra lại, không nên tự đổi thành “hợp lệ” chỉ vì nội dung PDF vẫn mở được.",
+          ],
+          points: [
+            {
+              title: "Không có chữ ký",
+              text: "Yêu cầu bên gửi cung cấp đúng PDF gốc đã ký, không phải bản in, ảnh quét hoặc bản xuất lại.",
+            },
+            {
+              title: "Không hợp lệ",
+              text: "Giữ nguyên tệp, không lưu đè và đối chiếu lại nguồn nhận; nội dung được bảo vệ có thể đã thay đổi.",
+            },
+            {
+              title: "Chưa đủ dữ liệu",
+              text: "Thử lại khi mạng ổn định và kiểm tra chi tiết chuỗi chứng thư, OCSP, CRL hoặc dấu thời gian.",
+            },
+            {
+              title: "Hợp lệ",
+              text: "Tiếp tục đối chiếu danh tính, thẩm quyền ký và nội dung nghiệp vụ trước khi sử dụng tài liệu.",
+            },
+          ],
+        },
+      ],
+    },
     faq: {
       title: "Khi kiểm tra chữ ký PDF",
       intro: "Các câu trả lời tập trung vào dữ liệu kỹ thuật mà công cụ có thể xác minh.",
@@ -201,6 +289,14 @@ export const landingPages = {
       {
         label: "Hướng dẫn kiểm tra hiệu lực chữ ký số của NEAC",
         href: "https://neac.gov.vn/vi/tin-tuc-su-kien/detail/thong-bao/huong-dan-kiem-tra-hieu-luc-chu-ky-so-tren-van-ban-dien-tu-702.htm",
+      },
+      {
+        label: "Hướng dẫn xác minh chữ ký số trong Adobe Acrobat",
+        href: "https://helpx.adobe.com/acrobat/desktop/e-sign-documents/manage-digital-signatures/validate-digital-sign.html",
+      },
+      {
+        label: "Tài liệu xác minh PAdES của Digital Signature Service",
+        href: "https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/doc/dss-documentation.html",
       },
     ],
   },
@@ -298,6 +394,89 @@ export const landingPages = {
         },
       ],
     },
+    deepDive: {
+      eyebrow: "Hiểu sâu hơn về XML đã ký",
+      title: "Vì sao file XML mở được nhưng chữ ký vẫn có thể lỗi?",
+      intro:
+        "XML là dữ liệu có cấu trúc, còn XML Signature bảo vệ những phần dữ liệu được tham chiếu theo quy tắc cụ thể. Việc trình duyệt hoặc phần mềm kế toán đọc được tệp chỉ chứng minh cú pháp đủ để mở, không chứng minh chữ ký và nội dung nghiệp vụ đã hợp lệ.",
+      sections: [
+        {
+          title: "Tham chiếu, biến đổi và chuẩn hóa XML",
+          paragraphs: [
+            "Một chữ ký XML chứa một hoặc nhiều Reference chỉ tới dữ liệu cần bảo vệ. Trước khi tính giá trị băm, dữ liệu có thể đi qua các phép biến đổi và bước chuẩn hóa XML. Bộ xác minh phải thực hiện lại đúng chuỗi xử lý này rồi so sánh DigestValue; sau đó mới xác minh SignatureValue trên SignedInfo bằng khóa công khai trong chứng thư.",
+            "Do XML có nhiều cách biểu diễn tương đương về mặt cú pháp, việc tự mở rồi lưu lại bằng trình soạn thảo có thể đổi namespace, encoding, khoảng trắng hoặc thứ tự khai báo. Một thay đổi tưởng như chỉ để “làm đẹp” vẫn có thể làm giá trị băm không còn khớp. Nên giữ nguyên file gốc nhận từ bên phát hành và thao tác trên một bản sao khi cần xem nội dung.",
+          ],
+          points: [
+            {
+              title: "Reference",
+              text: "Cho biết đối tượng nào được chữ ký bảo vệ; không mặc định mọi byte trong tệp đều nằm trong cùng phạm vi ký.",
+            },
+            {
+              title: "DigestValue",
+              text: "Giá trị băm của dữ liệu sau khi áp dụng biến đổi; sai khác cho thấy dữ liệu tham chiếu không còn khớp.",
+            },
+            {
+              title: "SignedInfo",
+              text: "Tập hợp thuật toán và tham chiếu được chuẩn hóa trước khi xác minh giá trị chữ ký.",
+            },
+            {
+              title: "KeyInfo và chứng thư",
+              text: "Cung cấp khóa hoặc chứng thư hỗ trợ xác minh, nhưng vẫn cần chuỗi CA và chính sách tin cậy riêng.",
+            },
+          ],
+        },
+        {
+          title: "XML hóa đơn và kết luận nghiệp vụ",
+          paragraphs: [
+            "Với hóa đơn điện tử, chữ ký số là một lớp xác minh trong toàn bộ hồ sơ. Sau khi chữ ký đạt, người nhận vẫn cần đối chiếu tên và mã số thuế của người bán, thông tin người mua, số hóa đơn, ngày lập, hàng hóa, thuế suất, tổng tiền và liên hệ với giao dịch thực tế. Chủ thể trên chứng thư cũng cần phù hợp với vai trò ký trong cấu trúc hóa đơn.",
+            "Trạng thái chữ ký không thay thế việc tra cứu hóa đơn trên kênh của cơ quan thuế. Mã cơ quan thuế được hiển thị trong tệp hoặc bản thể hiện cũng không nên được kiểm tra bằng mắt; cần dùng cổng tra cứu phù hợp để xác nhận trạng thái hiện tại, hóa đơn điều chỉnh, thay thế hoặc bị xử lý sau khi phát hành.",
+          ],
+          points: [
+            {
+              title: "Bước 1: file gốc",
+              text: "Lấy XML từ kênh chính thức của bên bán hoặc nhà cung cấp hóa đơn, không dùng XML được sao chép từ nội dung email.",
+            },
+            {
+              title: "Bước 2: chữ ký",
+              text: "Kiểm tra tính toàn vẹn, chủ thể, đơn vị cấp, chuỗi chứng thư và trạng thái thu hồi.",
+            },
+            {
+              title: "Bước 3: tra cứu",
+              text: "Đối chiếu mã và trạng thái trên cổng hóa đơn điện tử hoặc kênh chính thức được áp dụng.",
+            },
+            {
+              title: "Bước 4: nghiệp vụ",
+              text: "So khớp toàn bộ nội dung với hợp đồng, đơn hàng, biên bản, giao nhận và chứng từ thanh toán.",
+            },
+          ],
+        },
+        {
+          title: "Xử lý các lỗi XML thường gặp",
+          paragraphs: [
+            "Nếu công cụ báo không có chữ ký, tệp có thể chỉ là XML dữ liệu, chữ ký nằm ở tệp khác hoặc cấu trúc sử dụng profile chưa được hỗ trợ. Nếu báo không hợp lệ sau khi bạn đã mở và lưu tệp, hãy lấy lại bản gốc từ nguồn phát hành để loại trừ thay đổi do phần mềm chỉnh sửa.",
+            "Trường hợp chữ ký tách rời hoặc Reference trỏ tới tài nguyên ngoài tệp cần đúng dữ liệu nguồn để xác minh. Công cụ hiện nhận một tệp mỗi lần, vì vậy không thể tự suy đoán tài liệu ngoài bị thiếu. Tương tự, lỗi schema nghiệp vụ và lỗi chữ ký là hai nhóm khác nhau: XML có chữ ký hợp lệ vẫn có thể thiếu trường bắt buộc, còn XML đúng schema vẫn có thể chưa được ký.",
+          ],
+          points: [
+            {
+              title: "XML sai cú pháp",
+              text: "Yêu cầu lại tệp gốc; bộ xác minh không thể phân tích ổn định một tài liệu đã hỏng cấu trúc.",
+            },
+            {
+              title: "Sai tính toàn vẹn",
+              text: "Không chỉnh sửa tiếp. Đối chiếu checksum hoặc tải lại từ kênh gửi ban đầu.",
+            },
+            {
+              title: "Thiếu dữ liệu tham chiếu",
+              text: "Xác định chữ ký có tách rời và cần thêm tài liệu gốc hay không.",
+            },
+            {
+              title: "Chưa xác minh được CA",
+              text: "Đọc chuỗi chứng thư và trạng thái OCSP/CRL; không coi đây là bằng chứng hóa đơn hợp lệ.",
+            },
+          ],
+        },
+      ],
+    },
     faq: {
       title: "Khi kiểm tra XML, hóa đơn điện tử",
       intro: "Những điểm dễ nhầm giữa dữ liệu XML, bản thể hiện PDF và trạng thái hóa đơn.",
@@ -332,6 +511,14 @@ export const landingPages = {
       {
         label: "Tiêu chuẩn XML Signature của W3C",
         href: "https://www.w3.org/TR/xmldsig-core1/",
+      },
+      {
+        label: "Tài liệu xác minh XAdES của Digital Signature Service",
+        href: "https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/doc/dss-documentation.html",
+      },
+      {
+        label: "Cổng thông tin hóa đơn điện tử của Cục Thuế",
+        href: "https://hoadondientu.gdt.gov.vn/",
       },
     ],
   },
@@ -426,6 +613,89 @@ export const landingPages = {
           label: "Không hỗ trợ",
           tone: "neutral",
           text: "File có phần mở rộng phù hợp nhưng cấu trúc bên trong không thuộc định dạng hệ thống đọc được.",
+        },
+      ],
+    },
+    deepDive: {
+      eyebrow: "Hiểu sâu hơn về CMS/CAdES",
+      title: "P7S, P7M và mối quan hệ với tài liệu gốc",
+      intro:
+        "P7S và P7M là cách đặt tên tệp thường gặp cho dữ liệu dựa trên CMS/CAdES. Phần mở rộng giúp phần mềm chọn bộ đọc, nhưng cấu trúc bên trong mới quyết định nội dung có được đóng gói cùng chữ ký hay nằm ở một tệp tách rời.",
+      sections: [
+        {
+          title: "Attached và detached khác nhau ở đâu?",
+          paragraphs: [
+            "Trong CMS SignedData, nội dung có thể nằm trong trường eContent hoặc được để bên ngoài. Khi nội dung được đóng gói, bộ xác minh có đủ dữ liệu để tính lại giá trị băm từ chính container. Khi chữ ký ở dạng detached, container chỉ mang thông tin người ký, thuật toán, giá trị băm, giá trị chữ ký và có thể kèm chứng thư; tài liệu gốc phải được cung cấp riêng.",
+            "Tên .p7m thường được dùng cho gói có nội dung, còn .p7s thường gặp ở chữ ký tách rời, nhưng đây không phải quy tắc có thể tin tuyệt đối. Không nên đổi đuôi file để chuyển đổi giữa hai dạng. Phần mềm phải đọc ContentInfo và SignedData để biết chính xác nội dung có hiện diện hay không.",
+          ],
+          points: [
+            {
+              title: "Nội dung đóng gói",
+              text: "Dữ liệu gốc và chữ ký cùng nằm trong container; vẫn cần phần mềm phù hợp để đọc và xác minh.",
+            },
+            {
+              title: "Chữ ký tách rời",
+              text: "Cần đúng tài liệu gốc theo từng byte. Một bản có cùng tên nhưng đã lưu lại không đủ để đối chiếu.",
+            },
+            {
+              title: "Nhiều người ký",
+              text: "Một SignedData có thể chứa nhiều SignerInfo; từng chữ ký cần được đánh giá riêng.",
+            },
+            {
+              title: "Chứng thư đi kèm",
+              text: "Container có thể mang chứng thư hỗ trợ dựng chuỗi, nhưng chứng thư đi kèm không mặc nhiên là neo tin cậy.",
+            },
+          ],
+        },
+        {
+          title: "Cách ghép đúng P7S với file gốc",
+          paragraphs: [
+            "Với chữ ký detached, bộ xác minh tính giá trị băm từ tài liệu bạn cung cấp và so sánh với message-digest trong chữ ký. Chỉ một thay đổi nhỏ như đổi encoding, thêm ký tự xuống dòng, xuất lại PDF hoặc chỉnh metadata cũng có thể tạo giá trị băm khác. Vì vậy, “nội dung nhìn giống nhau” không có nghĩa hai file giống nhau về mặt mật mã.",
+            "Khi nhận hồ sơ gồm nhiều file, hãy giữ nguyên tên, kích thước và cấu trúc thư mục ban đầu. Nếu có checksum do bên gửi công bố, đối chiếu trước khi xác minh. Công cụ hiện nhận một tệp mỗi lần nên có thể đọc P7S/P7M có nội dung đóng gói, nhưng không thể tự ghép một P7S detached với file gốc nằm ngoài request.",
+          ],
+          points: [
+            {
+              title: "Tìm cặp theo nguồn gửi",
+              text: "Lấy P7S và tài liệu từ cùng một gói hoặc cùng lần phát hành, không ghép từ hai email khác nhau.",
+            },
+            {
+              title: "Không mở rồi lưu đè",
+              text: "Giữ một bản nguyên trạng vì phần mềm văn phòng có thể thay đổi byte dù nội dung hiển thị không đổi.",
+            },
+            {
+              title: "Đối chiếu checksum",
+              text: "Nếu có SHA-256 hoặc mã kiểm tra chính thức, dùng nó để xác nhận tệp chưa bị thay thế khi chuyển giao.",
+            },
+            {
+              title: "Yêu cầu lại trọn bộ",
+              text: "Khi thiếu tài liệu gốc, bên ký hoặc hệ thống phát hành là nguồn phù hợp để cung cấp lại đúng gói.",
+            },
+          ],
+        },
+        {
+          title: "Đọc lỗi và thuộc tính CAdES",
+          paragraphs: [
+            "CMS có thể chứa signing-time, countersignature, chứng thư và dữ liệu thu hồi, còn CAdES bổ sung các thuộc tính phục vụ hồ sơ chữ ký nâng cao. Không phải container nào cũng có đủ dấu thời gian hoặc bằng chứng dài hạn. Thuộc tính signing-time do người ký khai báo không có mức đảm bảo giống token dấu thời gian do dịch vụ độc lập ký.",
+            "Nếu file không hỗ trợ, nguyên nhân có thể là nội dung không phải CMS SignedData, tệp bị cắt hỏng, dùng encoding không được nhận diện hoặc thực tế là dữ liệu mã hóa thay vì dữ liệu đã ký. Nếu thiếu tài liệu gốc, đó không phải bằng chứng chữ ký sai; nó cho biết chưa có đủ đầu vào để tính lại giá trị băm.",
+          ],
+          points: [
+            {
+              title: "Thiếu tài liệu gốc",
+              text: "Tìm đúng file đi kèm hoặc dùng phần mềm hỗ trợ nạp đồng thời chữ ký detached và tài liệu nguồn.",
+            },
+            {
+              title: "Sai giá trị băm",
+              text: "Tài liệu cung cấp không phải bản đã ký hoặc đã thay đổi sau khi chữ ký được tạo.",
+            },
+            {
+              title: "Không dựng được chuỗi",
+              text: "Kiểm tra chứng thư trung gian, neo tin cậy và trạng thái thu hồi thay vì chỉ xem tên người ký.",
+            },
+            {
+              title: "Không có dấu thời gian",
+              text: "Hiểu là chữ ký không chứa bằng chứng thời gian độc lập được phát hiện, không phải hệ thống bỏ qua kiểm tra.",
+            },
+          ],
         },
       ],
     },
@@ -560,6 +830,89 @@ export const landingPages = {
         },
       ],
     },
+    deepDive: {
+      eyebrow: "Hiểu sâu hơn về chứng thư X.509",
+      title: "Đọc chứng thư số theo đúng ngữ cảnh của chữ ký",
+      intro:
+        "Chứng thư liên kết một khóa công khai với thông tin chủ thể trong một khoảng thời gian và dưới sự xác nhận của đơn vị cấp. Không trường dữ liệu riêng lẻ nào đủ để kết luận toàn bộ chữ ký đáng tin cậy.",
+      sections: [
+        {
+          title: "Chủ thể, đơn vị cấp và số serial",
+          paragraphs: [
+            "Subject mô tả chủ thể được cấp chứng thư; Issuer mô tả CA đã ký chứng thư đó. Các tên này thường được mã hóa dưới dạng Distinguished Name với nhiều thuộc tính như common name, organization, organizational unit và country. Giao diện rút gọn các thuộc tính quan trọng để dễ đọc, nhưng khi cần đối chiếu chính xác vẫn phải xem toàn bộ giá trị chủ thể.",
+            "Số serial chỉ duy nhất trong phạm vi một đơn vị cấp, vì vậy cần đọc serial cùng Issuer. Serial hữu ích khi đối chiếu hồ sơ cấp phát, phản hồi OCSP hoặc CRL. Nó không phải mã số thuế, số định danh cá nhân hay bằng chứng rằng người đang sử dụng khóa có thẩm quyền ký giao dịch cụ thể.",
+          ],
+          points: [
+            {
+              title: "Tên chủ thể",
+              text: "Đối chiếu với người hoặc tổ chức dự kiến ký; chú ý cách CA mã hóa tên và đơn vị trong chứng thư.",
+            },
+            {
+              title: "Đơn vị cấp",
+              text: "Xác định CA phát hành và kiểm tra đường dẫn từ CA đó tới neo tin cậy được cấu hình.",
+            },
+            {
+              title: "Serial",
+              text: "Dùng cùng tên đơn vị cấp để phân biệt chứng thư và tra cứu trạng thái, không dùng như danh tính độc lập.",
+            },
+            {
+              title: "Thuộc tính mở rộng",
+              text: "Mục đích sử dụng khóa, chính sách chứng thư và các extension có thể giới hạn cách chứng thư được sử dụng.",
+            },
+          ],
+        },
+        {
+          title: "Thời hạn chứng thư và thời điểm ký",
+          paragraphs: [
+            "Hai mốc Not Before và Not After xác định khoảng hiệu lực của chứng thư, không phải khoảng tồn tại của tài liệu. Một chứng thư còn hạn hôm nay vẫn có thể đã bị thu hồi. Ngược lại, chứng thư đã hết hạn hôm nay không tự động làm mọi chữ ký được tạo trong quá khứ trở thành sai.",
+            "Để đánh giá chữ ký quá khứ, bộ xác minh cần biết thời điểm đáng tin cậy mà chữ ký đã tồn tại, trạng thái thu hồi tại thời điểm phù hợp và chuỗi chứng thư khi đó. Thuộc tính thời gian do máy người ký ghi lại có thể bị điều chỉnh; dấu thời gian được một dịch vụ độc lập ký cung cấp bằng chứng mạnh hơn, nhưng cũng phải được xác minh như một token có chứng thư riêng.",
+          ],
+          points: [
+            {
+              title: "Còn hạn",
+              text: "Chỉ cho biết thời điểm hiện tại nằm trong khoảng hiệu lực; vẫn cần kiểm tra thu hồi và mục đích sử dụng khóa.",
+            },
+            {
+              title: "Đã hết hạn",
+              text: "Xem thời điểm ký, dấu thời gian và bằng chứng dài hạn trước khi kết luận chữ ký lịch sử.",
+            },
+            {
+              title: "Chưa có hiệu lực",
+              text: "Nếu chữ ký được tạo trước Not Before và không có bằng chứng khác, đây là dấu hiệu cần điều tra.",
+            },
+            {
+              title: "Không có dấu thời gian",
+              text: "Hiểu là không phát hiện bằng chứng thời gian độc lập; thời gian ký hiển thị có thể chỉ là giá trị được khai báo.",
+            },
+          ],
+        },
+        {
+          title: "Chuỗi tin cậy, OCSP và CRL",
+          paragraphs: [
+            "Chứng thư người ký thường do một CA trung gian cấp. Bộ xác minh dựng đường dẫn qua các chứng thư trung gian tới một root CA được cấu hình làm neo tin cậy, đồng thời kiểm tra chữ ký trên từng chứng thư, thời hạn, ràng buộc CA và mục đích sử dụng. Chứng thư được nhúng trong tài liệu có thể giúp hoàn thiện đường dẫn nhưng không tự biến nó thành nguồn tin cậy.",
+            "OCSP hỏi trạng thái một chứng thư cụ thể; CRL là danh sách thu hồi do CA công bố. Kết quả “good” hoặc “không ghi nhận thu hồi” chỉ có ý nghĩa trong phạm vi phản hồi và thời điểm của nguồn đó. Nếu nguồn không truy cập được hoặc dữ liệu quá cũ, trạng thái đúng là chưa xác định, không phải mặc định chứng thư an toàn.",
+          ],
+          points: [
+            {
+              title: "Chuỗi đạt",
+              text: "Có đường dẫn hợp lệ tới neo tin cậy theo kho và chính sách hiện tại; vẫn cần đọc trạng thái thu hồi.",
+            },
+            {
+              title: "Thiếu chứng thư trung gian",
+              text: "Tài liệu hoặc kho bổ trợ chưa có đủ mắt xích để dựng đường dẫn; không nên tự tin cậy chứng thư lạ.",
+            },
+            {
+              title: "Bị thu hồi",
+              text: "CA đã công bố trạng thái thu hồi; cần xem thời điểm và lý do, đồng thời dừng dùng kết quả như một chữ ký bình thường.",
+            },
+            {
+              title: "Chưa kiểm tra được",
+              text: "Thử lại khi nguồn trực tuyến sẵn sàng hoặc dùng hồ sơ có dữ liệu thu hồi được nhúng để đánh giá dài hạn.",
+            },
+          ],
+        },
+      ],
+    },
     faq: {
       title: "Khi đọc thông tin chứng thư số",
       intro: "Các câu hỏi về thời hạn, thu hồi và phạm vi file được hỗ trợ.",
@@ -594,6 +947,14 @@ export const landingPages = {
       {
         label: "Đặc tả giao thức OCSP RFC 6960",
         href: "https://datatracker.ietf.org/doc/rfc6960/",
+      },
+      {
+        label: "Hồ sơ chứng thư X.509 và CRL RFC 5280",
+        href: "https://datatracker.ietf.org/doc/html/rfc5280",
+      },
+      {
+        label: "Tài liệu xác minh chứng thư của Digital Signature Service",
+        href: "https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/doc/dss-documentation.html",
       },
     ],
   },

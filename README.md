@@ -2,6 +2,13 @@
 
 Website tieng Viet de kiem tra chu ky so online mien phi. Kien truc hien tai gom Next.js frontend, ASP.NET Core API chinh va Java validator service noi bo lam boundary cho Java DSS.
 
+## Cong cu truc tuyen
+
+- Website: https://chukyso.automation.info.vn
+- Bao loi va gop y: https://github.com/Dinhpham04/SignVerify/issues
+
+Cong cu ho tro PDF, XML, P7S va P7M; hien thi tinh toan ven, thong tin nguoi ky, chung thu so, chuoi CA, OCSP/CRL va dau thoi gian theo du lieu co tai thoi diem kiem tra.
+
 ## Chay local bang Docker
 
 ```bash
@@ -50,6 +57,8 @@ SIGNATURE_CHECK_ADJUNCT_STORE_PATH
 SIGNATURE_CHECK_ADJUNCT_STORE_PASSWORD
 ```
 
+`changeit` chi phu hop cho moi truong local. Khi deploy production, phai dat mat khau rieng qua bien moi truong va khong commit gia tri that vao repository.
+
 ## Chay rieng frontend va API
 
 Terminal 1:
@@ -72,8 +81,8 @@ npm run dev
 - Next.js da co upload form, UI hien thi report, Tailwind, shadcn/ui primitives va TanStack Query mutation.
 - ASP.NET Core da co API `/api/verification-jobs`, validation file size/extension va client goi validator.
 - Java validator da co REST endpoint `/internal/validate` va response dung contract.
-- Java validator da co logic DSS that cho PDF/PAdES, gom unsigned PDF, PDF da ky, PDF bi sua sau khi ky, NEAC Root CA trust store va public CA adjunct store.
-- Logic DSS that cho XAdES/CAdES se duoc gan vao `src/DssValidator` trong phase tiep theo.
+- Java validator da co logic DSS cho PDF/PAdES, XML/XAdES va P7S/P7M/CAdES, gom kiem tra file chua ky, file bi sua sau khi ky, chuoi chung thu, OCSP/CRL va dau thoi gian.
+- Trust store su dung NEAC Root CA lam trust anchor va kho public CA bo sung de dung chuoi chung thu.
 
 Xem them:
 
